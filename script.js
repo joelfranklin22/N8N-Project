@@ -1,4 +1,3 @@
-
       const form = document.getElementById("reminderForm");
       const successMsg = document.getElementById("successMsg");
       const taskType = document.getElementById("type");
