@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Task Reminder</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #e0eafc, #cfdef3);
+        font-family: "Segoe UI", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        background: white;
+        padding: 30px 25px;
+        border-radius: 16px;
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+      }
+
+      label {
+        font-weight: 600;
+        margin-top: 15px;
+        display: block;
+        color: #444;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px 12px;
+        margin-top: 6px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 15px;
+        transition: border 0.3s;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .success {
+        text-align: center;
+        color: green;
+        margin-top: 15px;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 20px;
+          margin: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>📅 Smart Task Reminder</h2>
+      <form id="reminderForm">
+        <label for="type">Task Type</label>
+        <select id="type" required>
+          <option value="">Select Type</option>
+          <option value="🧾 Bill Payment">🧾 Bill Payment</option>
+          <option value="📚 Study Task">📚 Study Task</option>
+          <option value="🏢 Work/Office Task">🏢 Work/Office Task</option>
+          <option value="🛒 Personal Errands">🛒 Personal Errands</option>
+          <option value="💬 Call/Message Someone">
+            💬 Call/Message Someone
+          </option>
+          <option value="⏳ Project Deadline">⏳ Project Deadline</option>
+          <option value="🧘 Self-Care / Habits">🧘 Self-Care / Habits</option>
+          <option value="💼 Appointments">💼 Appointments</option>
+        </select>
+
+        <label for="title">Task Name</label>
+        <input type="text" id="title" required placeholder="E.g. Task name" />
+
+        <label for="datetime">Due Date (Time optional in message)</label>
+        <input type="date" id="datetime" required />
+
+        <label for="email">Your Email</label>
+        <input
+          type="email"
+          id="email"
+          required
+          autocomplete="email"
+          placeholder="you@example.com"
+        />
+
+        <label for="message">Reminder Message</label>
+        <textarea
+          id="message"
+          rows="3"
+          placeholder="Optional: Add time (e.g., 10:00 AM) or any note..."
+        ></textarea>
+        <button type="submit">Set Reminder</button>
+      </form>
+
+      <div class="success" id="successMsg"></div>
+    </div>
+
+    <script>
+      const form = document.getElementById("reminderForm");
+      const successMsg = document.getElementById("successMsg");
+      const taskType = document.getElementById("type");
+      const taskName = document.getElementById("title");
+
+      const placeholders = {
+        "🧾 Bill Payment": "e.g. Water Bill, Semester Fees",
+        "📚 Study Task": "e.g. Complete Chapter 5, Revise Physics",
+        "🏢 Work/Office Task": "e.g. Finish Report, Attend Team Meeting",
+        "🛒 Personal Errands": "e.g. Grocery Shopping, Buy Medicines",
+        "💬 Call/Message Someone": "e.g. Call Mom, Message Boss",
+        "⏳ Project Deadline": "e.g. Submit Website Project",
+        "🧘 Self-Care / Habits": "e.g. 30-min Meditation, Morning Walk",
+        "💼 Appointments": "e.g. Doctor at 10am, Dentist Visit",
+      };
+
+      taskType.addEventListener("change", () => {
+        const selected = taskType.value;
+        taskName.placeholder = placeholders[selected] || "e.g. Task Name";
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const data = {
+          task_type: document.getElementById("type").value,
+          task_name: document.getElementById("title").value,
+          due_datetime: document.getElementById("datetime").value,
+          email: document.getElementById("email").value,
+          reminder_message: document.getElementById("message").value,
+        };
+
+        try {
+          const webhookURL =
+            "https://4ecc9f0e7db7868ea6e10ba74fa07786.n8n.selfmade.codes/webhook/Remainder_Task";
+
+          const response = await fetch(webhookURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          if (response.ok) {
+            const text = await response.text();
+            successMsg.textContent = text;
+          } else {
+            successMsg.textContent = "❌ Failed to send reminder!";
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          successMsg.textContent = "🚫 Could not connect to server.";
+        }
+
+        setTimeout(() => {
+          location.reload();
+        }, 4000);
+      });
+    </script>
+  </body>
+</html>
