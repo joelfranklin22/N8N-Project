@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Task Reminder</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h2>📅 Smart Task Reminder</h2>
+      <form id="reminderForm">
+        <label for="type">Task Type</label>
+        <select id="type" required>
+          <option value="">Select Type</option>
+          <option value="🧾 Bill Payment">🧾 Bill Payment</option>
+          <option value="📚 Study Task">📚 Study Task</option>
+          <option value="🏢 Work/Office Task">🏢 Work/Office Task</option>
+          <option value="🛒 Personal Errands">🛒 Personal Errands</option>
+          <option value="💬 Call/Message Someone">
+            💬 Call/Message Someone
+          </option>
+          <option value="⏳ Project Deadline">⏳ Project Deadline</option>
+          <option value="🧘 Self-Care / Habits">🧘 Self-Care / Habits</option>
+          <option value="💼 Appointments">💼 Appointments</option>
+        </select>
+
+        <label for="title">Task Name</label>
+        <input type="text" id="title" required placeholder="E.g. Task name" />
+
+        <label for="datetime">Due Date (Time optional in message)</label>
+        <input type="date" id="datetime" required />
+
+        <label for="email">Your Email</label>
+        <input
+          type="email"
+          id="email"
+          required
+          autocomplete="email"
+          placeholder="you@example.com"
+        />
+
+        <label for="message">Reminder Message</label>
+        <textarea
+          id="message"
+          rows="3"
+          placeholder="Optional: Add time (e.g., 10:00 AM) or any note..."
+        ></textarea>
+        <button type="submit">Set Reminder</button>
+      </form>
+
+      <div class="success" id="successMsg"></div>
+    </div>
+
+   
+  </body>
+</html>
