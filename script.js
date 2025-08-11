@@ -37,8 +37,8 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const webhookURL =
-      "https://4ecc9f0e7db7868ea6e10ba74fa07786.n8n.selfmade.codes/webhook-test/Remainder_Task";
+      const webhookURL =
+      "https://4ecc9f0e7db7868ea6e10ba74fa07786.n8n.selfmade.codes/webhook/Remainder_Task";
 
     const response = await fetch(webhookURL, {
       method: "POST",
